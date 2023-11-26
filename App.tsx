@@ -16,11 +16,18 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
+import AllPlaces from "./screens/AllPlaces";
+import PlaceDetails from "./screens/PlaceDetails";
+import Map from "./screens/Map";
 
 export type StackParams = {
   Login: undefined;
   Signup: undefined;
   Welcome: undefined;
+  AllPlaces: undefined;
+  PlaceDetails: { placeId: string };
+  Map: { initialLat: number, initialLng: number }
+  AddPlace: { pickedLat: number, pickedLng: number }
 }
 
 const Stack = createNativeStackNavigator<StackParams>();
@@ -64,7 +71,37 @@ function AuthenticatedStack() {
           ),
         }}
       />
-    </Stack.Navigator>
+      <Stack.Screen
+        name="AllPlaces"
+        component={AllPlaces}
+        options={({ navigation }) => ({
+          title: "Your Favorite Places",
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              color={tintColor ?? "white"}
+              icon="add"
+              size={24}
+              onPress={() => navigation.navigate("AddPlace")}
+            />
+          ),
+        })}
+      />
+      {/* <Stack.Screen
+        name="AddPlace"
+        component={AddPlace}
+        options={{
+          title: "Add a new Place",
+        }}
+      /> */}
+      <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen
+        name="PlaceDetails"
+        component={PlaceDetails}
+        options={{
+          title: "Loading Place...",
+        }}
+      />
+    </Stack.Navigator >
   );
 }
 
