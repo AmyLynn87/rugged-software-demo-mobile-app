@@ -19,6 +19,7 @@ import IconButton from "./components/ui/IconButton";
 import AllPlaces from "./screens/AllPlaces";
 import PlaceDetails from "./screens/PlaceDetails";
 import Map from "./screens/Map";
+import AddPlace from "./screens/AddPlace";
 
 export type StackParams = {
   Login: undefined;
@@ -86,13 +87,13 @@ function AuthenticatedStack() {
           ),
         })}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="AddPlace"
         component={AddPlace}
         options={{
           title: "Add a new Place",
         }}
-      /> */}
+      />
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen
         name="PlaceDetails"
