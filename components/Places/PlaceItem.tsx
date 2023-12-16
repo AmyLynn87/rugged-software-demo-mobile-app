@@ -3,11 +3,11 @@ import { View, Image, Text, Pressable, StyleSheet } from "react-native";
 
 //Local
 import { Colors } from "../../constants/styles";
-import { Place } from "../../models/place";
+import { ExistingPlace } from "../../models/place";
 
 interface Props {
-  place: Place;
-  onSelect: (placeId: string) => void
+  place: ExistingPlace;
+  onSelect: (placeId: number) => void
 }
 
 function PlaceItem({ place, onSelect }: Props) {

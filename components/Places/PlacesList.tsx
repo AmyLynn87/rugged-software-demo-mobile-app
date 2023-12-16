@@ -6,11 +6,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 //Local
 import { Colors } from "../../constants/styles";
 import PlaceItem from "./PlaceItem";
-import { Place } from "../../models/place";
+import { ExistingPlace } from "../../models/place";
 import { StackParams } from "../../App";
 
 interface Props {
-  places: Place[]
+  places: ExistingPlace[]
 }
 
 type NavigationProps = NativeStackNavigationProp<StackParams, 'PlaceDetails'>;
@@ -18,7 +18,7 @@ type NavigationProps = NativeStackNavigationProp<StackParams, 'PlaceDetails'>;
 function PlacesList({ places }: Props) {
   const navigation: NavigationProps = useNavigation();
 
-  function selectPlaceHandler(id: string) {
+  function selectPlaceHandler(id: number) {
     navigation.navigate("PlaceDetails", {
       placeId: id,
     });
@@ -38,7 +38,7 @@ function PlacesList({ places }: Props) {
     <FlatList
       style={styles.list}
       data={places}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => (
         <PlaceItem place={item} onSelect={selectPlaceHandler} />
       )}
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
   },
   fallbackText: {
     fontSize: 16,
-    color: Colors.primary200,
+    color: Colors.secondary900,
   },
 });

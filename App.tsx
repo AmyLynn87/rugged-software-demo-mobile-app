@@ -1,12 +1,14 @@
 //Libs
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer"
 import { Fragment, useContext, useEffect, useState, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
 import { View } from "react-native";
 import * as Font from "expo-font";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import Entypo from "@expo/vector-icons/Entypo";
 
 //Local
@@ -24,14 +26,19 @@ import AddPlace from "./screens/AddPlace";
 export type StackParams = {
   Login: undefined;
   Signup: undefined;
-  Welcome: undefined;
-  AllPlaces: undefined;
-  PlaceDetails: { placeId: string };
+  Drawer: NavigatorScreenParams<DrawerParams>;
+  PlaceDetails: { placeId: number };
   Map: { initialLat: number, initialLng: number }
   AddPlace: { pickedLat: number, pickedLng: number }
 }
 
+export type DrawerParams = {
+  Home: undefined;
+  AllPlaces: undefined;
+}
+
 const Stack = createNativeStackNavigator<StackParams>();
+const Drawer = createDrawerNavigator<DrawerParams>()
 
 function AuthStack() {
   return (
@@ -48,18 +55,22 @@ function AuthStack() {
   );
 }
 
-function AuthenticatedStack() {
+function DrawerNavigator() {
   const authCtx = useContext(AuthContext);
   return (
-    <Stack.Navigator
+    <Drawer.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: Colors.secondary900 },
         headerTintColor: Colors.primary500,
-        contentStyle: { backgroundColor: Colors.primary100 },
+        sceneContainerStyle: { backgroundColor: Colors.primary100 },
+        drawerContentStyle: { backgroundColor: Colors.secondary900 },
+        drawerInactiveTintColor: "white",
+        drawerActiveTintColor: Colors.secondary900,
+        drawerActiveBackgroundColor: Colors.primary500,
       }}
     >
-      <Stack.Screen
-        name="Welcome"
+      <Drawer.Screen
+        name="Home"
         component={WelcomeScreen}
         options={{
           headerRight: ({ tintColor }) => (
@@ -72,11 +83,14 @@ function AuthenticatedStack() {
           ),
         }}
       />
-      <Stack.Screen
+      <Drawer.Screen
         name="AllPlaces"
         component={AllPlaces}
         options={({ navigation }) => ({
           title: "Your Favorite Places",
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="list" color={color} size={size} />
+          ),
           headerRight: ({ tintColor }) => (
             <IconButton
               color={tintColor ?? "white"}
@@ -84,8 +98,28 @@ function AuthenticatedStack() {
               size={24}
               onPress={() => navigation.navigate("AddPlace")}
             />
-          ),
+          )
         })}
+      />
+    </Drawer.Navigator>
+  )
+}
+
+function AuthenticatedStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: Colors.secondary900 },
+        headerTintColor: Colors.primary500,
+        contentStyle: { backgroundColor: Colors.primary100 },
+      }}
+    >
+      <Stack.Screen
+        name="Drawer"
+        component={DrawerNavigator}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="AddPlace"

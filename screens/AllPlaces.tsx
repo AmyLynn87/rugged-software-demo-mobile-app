@@ -5,10 +5,10 @@ import { useIsFocused } from "@react-navigation/native";
 //Local
 import PlacesList from "../components/Places/PlacesList";
 import { fetchPlaces } from "../util/database";
-import { Place, validatePlace } from "../models/place";
+import { ExistingPlace, Place, validatePlace } from "../models/place";
 
 function AllPlaces() {
-  const [loadedPlaces, setLoadedPlaces] = useState<Place[]>([]);
+  const [loadedPlaces, setLoadedPlaces] = useState<ExistingPlace[]>([]);
 
   const isFocused = useIsFocused();
 
